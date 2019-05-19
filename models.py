@@ -1,6 +1,8 @@
+import os
 from peewee import *
 
-db = SqliteDatabase('database.sqlite3')
+script_location = os.path.dirname(os.path.realpath(__file__))
+db = SqliteDatabase(os.path.join(script_location, 'database.sqlite3'))
 
 class BaseModel(Model):
     class Meta:

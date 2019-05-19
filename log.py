@@ -1,6 +1,8 @@
 import logging
+import os
 
-DEFAULT_FILENAME = './log.txt'
+script_location = os.path.dirname(os.path.realpath(__file__))
+DEFAULT_FILENAME = os.path.join(script_location, 'log.txt')
 DEFAULT_LEVEL = logging.INFO
 
 def setupLogger(filename=DEFAULT_FILENAME, level=DEFAULT_LEVEL):

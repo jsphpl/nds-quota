@@ -3,6 +3,7 @@
 from app import BaseApp
 from commands.auth_client import AuthClient
 from commands.catchall import Catchall
+from commands.pre_auth import PreAuth
 
 
 class BinAuth(BaseApp):
@@ -13,6 +14,7 @@ class BinAuth(BaseApp):
     """
 
     def register_commands(self):
+        self.add_command('pre_auth', PreAuth)
         self.add_command('auth_client', AuthClient)
         self.add_command('client_auth', Catchall)
         self.add_command('client_deauth', Catchall)

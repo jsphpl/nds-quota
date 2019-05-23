@@ -26,7 +26,7 @@ class PreAuth(BaseApp):
             placeholders = {}
             client = self.obtain_client_data(query['clientip'])
             if client is not None:
-                user = self.find_user_by_mac(client.mac)
+                user = self.find_user_by_mac(client['mac'])
                 if user is not None:
                     placeholders['remaining_quota'] = self.get_remaining_quota(user, client)
 

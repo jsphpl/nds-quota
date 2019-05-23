@@ -45,6 +45,7 @@ class PreAuth(BaseApp):
             self.assign_device_to_user(user, client['mac'])
             print(self.renderer.render('success', {
                 'query': query,
+                'remaining_quota': self.get_remaining_quota(user, client),
                 'token': client['token'],
             }))
             exit(0)
@@ -96,12 +97,16 @@ class PreAuth(BaseApp):
 # "duration":0,
 # "token":"381149ab",
 # "state":"Preauthenticated",
-# "downloaded":0,
+# "downloaded":10240,
 # "avg_down_speed":0.00,
 # "uploaded":0,
 # "avg_up_speed":0.00
 # }"""
         return json.loads(stdout)
+
+    def get_remaining_quota(self, user, client):
+        used = (client['downloaded'] + client['uploaded']) * 1024
+        return user.max_bytes - used
 
 
 if __name__ == '__main__':

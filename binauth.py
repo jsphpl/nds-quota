@@ -14,7 +14,6 @@ class BinAuth(BaseApp):
     """
 
     def register_commands(self):
-        self.add_command('pre_auth', PreAuth)
         self.add_command('auth_client', AuthClient)
         self.add_command('client_auth', Catchall)
         self.add_command('client_deauth', Catchall)

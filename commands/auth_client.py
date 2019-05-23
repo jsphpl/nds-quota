@@ -34,11 +34,3 @@ class AuthClient(Command):
         print('%d 0 %d' % (SESSION_DURATION, user.max_bytes))
         exit(0)
 
-    def assign_device_to_user(self, user):
-        mac_address = self.app.args.mac_address
-        try:
-            device = self.app.models.Device.get(mac_address=mac_address)
-            device.update(user_id=user.id)
-        except Exception:
-            device = self.app.models.Device.create(mac_address=mac_address, user_id=user.id)
-

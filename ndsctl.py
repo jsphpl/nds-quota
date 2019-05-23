@@ -8,6 +8,13 @@ class NDSCTL():
         except Exception:
             return None
 
+    def deauth(self, identifier):
+        try:
+            self.execute('deauth', identifier)
+            return True
+        except Exception:
+            return False
+
     def execute(self, *args):
         command = subprocess.Popen(
             ['ndsctl', *args],

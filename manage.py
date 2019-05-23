@@ -4,6 +4,7 @@ from app import BaseApp
 from commands.seed import Seed
 from commands.list_users import ListUsers
 from commands.update_used_bytes import UpdateUsedBytes
+from commands.deauth_exceeded import DeauthExceeded
 
 
 class Manage(BaseApp):
@@ -17,6 +18,7 @@ class Manage(BaseApp):
         self.add_command('seed', Seed)
         self.add_command('list-users', ListUsers)
         self.add_command('update-used-bytes', UpdateUsedBytes)
+        self.add_command('deauth-exceeded', DeauthExceeded)
 
     def register_arguments(self, parser):
         pass

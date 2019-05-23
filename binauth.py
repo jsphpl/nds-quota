@@ -3,7 +3,6 @@
 from app import BaseApp
 from commands.auth_client import AuthClient
 from commands.catchall import Catchall
-from commands.pre_auth import PreAuth
 
 
 class BinAuth(BaseApp):

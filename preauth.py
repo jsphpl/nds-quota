@@ -51,6 +51,15 @@ class PreAuth(BaseApp):
                 }))
                 exit(0)
 
+            # Quota exceeded
+            if user.used_bytes >= user.max_bytes:
+                print(self.renderer.render('login', {
+                    'query': query,
+                    'message': 'You have exceeded your quota. Please use a different account.'
+                }))
+                exit(0)
+
+
             # Good username and password
             client = self.obtain_client_data(query['clientip'])
             self.assign_device_to_user(user, client['mac'])

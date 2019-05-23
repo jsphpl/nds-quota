@@ -1,7 +1,7 @@
 from peewee import prefetch
 from cli_app import Command
 
-class UpdateUsedBytes(Command):
+class UpdateQuota(Command):
     """Update used bytes for all users in the database"""
 
     def run(self):

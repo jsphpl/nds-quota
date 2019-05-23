@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 
-import json
 import logging
 import urllib.parse
-import subprocess
 from app import BaseApp
 from renderer import Renderer
 
@@ -95,30 +93,7 @@ class PreAuth(BaseApp):
             device = self.models.Device.create(mac_address=mac_address, user_id=user.id)
 
     def obtain_client_data(self, identifier):
-        try:
-            command = subprocess.Popen(
-                ['ndsctl', 'json', identifier],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT
-            )
-            stdout, stderr = command.communicate()
-    #         stdout = """{
-    # "id":1,
-    # "ip":"192.168.1.208",
-    # "mac":"f8:1a:67:0c:95:a0",
-    # "added":0,
-    # "active":1558604418,
-    # "duration":0,
-    # "token":"381149ab",
-    # "state":"Preauthenticated",
-    # "downloaded":10240,
-    # "avg_down_speed":0.00,
-    # "uploaded":0,
-    # "avg_up_speed":0.00
-    # }"""
-            return json.loads(stdout)
-        except Exception:
-            return None
+        return self.ndsctl.json(identifier)
 
     def get_remaining_quota(self, user, client):
         used = (client['downloaded'] + client['uploaded']) * 1024

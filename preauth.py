@@ -19,7 +19,7 @@ class PreAuth(BaseApp):
 
     def run(self):
         query = self.parse_query()
-        Log.info('Preauth with query string "%s"' % query)
+        Log.info('Preauth with query string "%s", parsed: %s' % (self.args.query_string, query))
 
         if ('username' in query) and ('password' in query):
             user = self.find_user(query['username'])
@@ -30,7 +30,7 @@ class PreAuth(BaseApp):
                     'query': query,
                     'message': 'User not found. Please check the username.'
                 }))
-                exit(1)
+                exit(0)
 
             # Bad password
             if user.password != query['password']:
@@ -38,7 +38,7 @@ class PreAuth(BaseApp):
                     'query': query,
                     'message': 'Wrong password. Please try again.'
                 }))
-                exit(1)
+                exit(0)
 
             # Good username and password
             client = self.obtain_client_data(query['clientip'])

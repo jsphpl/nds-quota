@@ -3,13 +3,10 @@ import json
 
 class NDSCTL():
     def json(self, identifier = ''):
-        return {
-            'downloaded': 123,
-        }
-        # try:
-        #     return json.loads(self.execute('json', identifier))
-        # except Exception:
-        #     return None
+        try:
+            return json.loads(self.execute('json', identifier))
+        except Exception:
+            return None
 
     def execute(self, *args):
         command = subprocess.Popen(

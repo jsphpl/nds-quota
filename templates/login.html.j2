@@ -3,12 +3,12 @@
 {% block content %}
     <h1>Login</h1>
     <form action="/nodogsplash_preauth/" method="GET">
-        <input type="hidden" name="clientip" value="{{ clientip }}" />
-        <input type="hidden" name="gatewayname" value="{{ gatewayname }}" />
-        <input type="hidden" name="redir" value="{{ redir }}" />
+        <input type="hidden" name="clientip" value="{{ query.clientip }}" />
+        <input type="hidden" name="gatewayname" value="{{ query.gatewayname }}" />
+        <input type="hidden" name="redir" value="{{ query.redir }}" />
 
         <label for="username">Username</label>
-        <input id="username" type="text" name="username" autocomplete="on" />
+        <input id="username" type="text" name="username" value="{{ query.username }}" autocomplete="on" />
 
         <label for="password">Password</label>
         <input id="password" type="password" name="password" autocomplete="on" />

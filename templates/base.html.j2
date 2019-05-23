@@ -3,6 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
+    <style type="text/css">
+        #content {
+            width: 100%;
+            text-align: center;
+        }
+        #message {
+            display: block;
+            padding: 2rem;
+            background-color: red;
+            color: white;
+        }
+    </style>
 </head>
 <body>
     <div id="content">{% block content %}{% endblock %}</div>

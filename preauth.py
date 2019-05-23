@@ -97,7 +97,8 @@ class PreAuth(BaseApp):
     def assign_device_to_user(self, user, mac_address):
         try:
             device = self.models.Device.get(mac_address=mac_address)
-            device.update(user_id=user.id)
+            device.user_id = user.id
+            device.save()
         except Exception:
             device = self.models.Device.create(mac_address=mac_address, user_id=user.id)
 

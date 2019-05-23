@@ -31,7 +31,7 @@ class AuthClient(Command):
         self.assign_device_to_user(user)
 
         Log.info('Auth attempt with username="%s" succeeded.' % username)
-        print('%d 0 0' % SESSION_DURATION)
+        print('%d 0 %d' % (SESSION_DURATION, user.max_bytes))
         exit(0)
 
     def assign_device_to_user(self, user):

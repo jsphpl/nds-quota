@@ -2,6 +2,7 @@
 
 from app import BaseApp
 from commands.seed import Seed
+from commands.list_users import ListUsers
 
 
 class Manage(BaseApp):
@@ -13,6 +14,7 @@ class Manage(BaseApp):
 
     def register_commands(self):
         self.add_command('seed', Seed)
+        self.add_command('list-users', ListUsers)
 
     def register_arguments(self, parser):
         pass

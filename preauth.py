@@ -8,13 +8,14 @@ Log = logging.getLogger(__name__)
 
 class PreAuth(BaseApp):
     def __init__(self, renderer):
-        super(BaseApp, self).__init__()
+        super(PreAuth, self).__init__()
         self.renderer = renderer
 
     def register_arguments(self, parser):
         parser.add_argument('query_string', type=str)
 
     def run(self):
+        Log.info('Preauth with query string "%s"' % self.args.query_string)
         print(self.renderer.render('login'))
 
 if __name__ == '__main__':

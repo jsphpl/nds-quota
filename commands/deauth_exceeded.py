@@ -14,5 +14,6 @@ class DeauthExceeded(Command):
         for user in users_with_devices:
             for device in user.devices:
                 self.app.ndsctl.deauth(device.mac_address)
+                device.delete_instance()
             Log.info('Deauthed user #%d with %d >= %d' % (user.id, user.used_bytes, user.max_bytes))
 

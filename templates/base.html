@@ -1,0 +1,86 @@
+{{ define "base" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{{ .Title }}</title>
+
+    <style type="text/css">
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+        }
+        #content {
+            width: 100%;
+            text-align: center;
+            padding: 2rem;
+        }
+        .message {
+            display: block;
+            padding: 2rem;
+            margin-bottom: 4rem;
+            border-radius: 1rem;
+            font-weight: bold;
+        }
+        .info {
+            color: white;
+            background-color: #112266;
+        }
+        .error {
+            color: white;
+            background-color: red;
+        }
+        .form-control {
+            display: block;
+            border-radius: .5rem;
+            width: 100%;
+            padding: 1rem 0;
+            margin-bottom: 3rem;
+            font-size: 2rem;
+        }
+        label {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <h1>{{ .Title }}</h1>
+        {{- if .Info }}
+            <p class="message info">{{ .Info }}</p>
+        {{- end }}
+        {{- if .Error }}
+            <p class="message error">{{ .Error }}</p>
+        {{- end }}
+
+        {{- if .ShowForm }}
+            <form action="/opennds_preauth/" method="GET">
+                <input type="hidden" name="clientip" value="{{ .Query.clientip }}" />
+                <input type="hidden" name="gatewayname" value="{{ .Query.gatewayname }}" />
+                <input type="hidden" name="redir" value="{{ .Query.redir }}" />
+
+                <label for="tk">Token:</label>
+                <input class="form-control" id="tk" type="text" name="tk" value="{{ .Query.tk }}" autocomplete="on"
+                    required /><br />
+
+                <input class="form-control" type="submit" value="Login" />
+            </form>
+        {{- end }}
+
+        {{- if .Token }}
+            <form action="/opennds_auth/" method="GET">
+                <input type="hidden" name="tok" value="{{ .Token }}" />
+                <input type="hidden" name="redir" value="{{ .Query.redir }}" />
+
+                <input class="form-control" type="submit" value="Start Browsing" />
+            </form>
+        {{- end }}
+    </div>
+
+</body>
+</html>
+{{ end }}

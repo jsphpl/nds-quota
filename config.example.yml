@@ -1,0 +1,3 @@
+templateDirectory: /opt/nds-quota/templates
+dataDirectory: /opt/nds-quota/data
+logfile: /opt/nds-quota/nds-quota.log

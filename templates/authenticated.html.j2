@@ -1,8 +1,0 @@
-{% extends "base.html.j2" %}
-{% block title %}Already logged in{% endblock %}
-{% block content %}
-    <h1>You are already logged in</h1>
-    {% if remaining_quota is defined %}
-        <p id="message">You have {{'%0.2f'| format(remaining_quota / 1024**2|float)}} MiB of transfer volume remaining</p>
-    {% endif %}
-{% endblock %}

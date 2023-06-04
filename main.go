@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -18,11 +17,19 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	logfile, err := os.OpenFile(config.Logfile, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0666)
+
+	var logpath string
+	if config.Log.Enabled {
+		logpath = config.Log.Path
+	} else {
+		logpath = os.DevNull
+	}
+	logfile, err := os.OpenFile(logpath, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer logfile.Close()
+	log.SetOutput(logfile)
 
 	// Build the application with all its dependencies
 	renderer, err := renderer.NewRenderer(config.TemplateDirectory)
@@ -32,14 +39,14 @@ func main() {
 	app := ndsquota.New(
 		accounts.NewAccountRepository(config.DataDirectory),
 		renderer,
-		&ndsctl.NDSCTL{},
+		ndsctl.NewNDSCTL(config.NDSCTLBin),
 	)
 
 	// Run it!
 	if len(os.Args) < 2 {
-		fmt.Fprintf(logfile, "missing argument")
+		log.Printf("missing argument")
 	} else if os.Args[1] == "check-deauth" {
-		fmt.Fprintf(logfile, "checkin quota")
+		log.Printf("checking quota")
 		err = app.CheckDeauth()
 		if err != nil {
 			log.Fatal(err)
@@ -49,7 +56,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Fprintf(logfile, "preauth call: %+v\n", query)
+		log.Printf("preauth call: %+v\n", query)
 		app.Preauth(query)
 	}
 }

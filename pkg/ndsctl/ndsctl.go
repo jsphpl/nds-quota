@@ -18,11 +18,17 @@ type ClientInfo struct {
 }
 
 type NDSCTL struct {
-	//
+	bin string
 }
 
-func (ndsctl *NDSCTL) ClientInfo(id string) (*ClientInfo, error) {
-	cmd := exec.Command("ndsctl", "json", id)
+func NewNDSCTL(bin string) *NDSCTL {
+	return &NDSCTL{
+		bin: bin,
+	}
+}
+
+func (n *NDSCTL) ClientInfo(id string) (*ClientInfo, error) {
+	cmd := exec.Command(n.bin, "json", id)
 	stdout, err := cmd.Output()
 	if err != nil {
 		return nil, err
@@ -33,12 +39,12 @@ func (ndsctl *NDSCTL) ClientInfo(id string) (*ClientInfo, error) {
 	return &data, err
 }
 
-func (ndsctl *NDSCTL) Auth(id string) error {
-	cmd := exec.Command("ndsctl", "auth", id, "0", "0", "0", "0", "0", "")
+func (n *NDSCTL) Auth(id string) error {
+	cmd := exec.Command(n.bin, "auth", id, "0", "0", "0", "0", "0", "")
 	return cmd.Run()
 }
 
-func (ndsctl *NDSCTL) Deauth(id string) error {
-	cmd := exec.Command("ndsctl", "deauth", id)
+func (n *NDSCTL) Deauth(id string) error {
+	cmd := exec.Command(n.bin, "deauth", id)
 	return cmd.Run()
 }

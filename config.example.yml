@@ -1,3 +1,6 @@
 templateDirectory: /opt/nds-quota/templates
 dataDirectory: /opt/nds-quota/data
-logfile: /opt/nds-quota/nds-quota.log
+ndsctl: /usr/bin/ndsctl
+log:
+  path: /opt/nds-quota/nds-quota.log
+  enabled: True

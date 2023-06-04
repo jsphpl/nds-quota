@@ -10,7 +10,11 @@ import (
 type Config struct {
 	TemplateDirectory string `yaml:"templateDirectory"`
 	DataDirectory     string `yaml:"dataDirectory"`
-	Logfile           string `yaml:"logfile"`
+	NDSCTLBin         string `yaml:"ndsctl"`
+	Log               struct {
+		Path    string `yaml:"path"`
+		Enabled bool   `yaml:"enabled"`
+	} `yaml:"log"`
 }
 
 func Load() (*Config, error) {

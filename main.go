@@ -13,6 +13,7 @@ import (
 )
 
 func main() {
+	// load config and open logfile
 	config, err := config.Load()
 	if err != nil {
 		log.Fatal(err)
@@ -22,8 +23,8 @@ func main() {
 		log.Fatal(err)
 	}
 	defer logfile.Close()
-	fmt.Fprintf(logfile, "preauth call: %+v\n", os.Args)
 
+	// Build the application with all its dependencies
 	renderer, err := renderer.NewRenderer(config.TemplateDirectory)
 	if err != nil {
 		log.Fatal(err)
@@ -34,15 +35,21 @@ func main() {
 		&ndsctl.NDSCTL{},
 	)
 
+	// Run it!
 	if len(os.Args) < 2 {
-		log.Fatalf("received no arguments")
+		fmt.Fprintf(logfile, "missing argument")
+	} else if os.Args[1] == "check-deauth" {
+		fmt.Fprintf(logfile, "checkin quota")
+		err = app.CheckDeauth()
+		if err != nil {
+			log.Fatal(err)
+		}
+	} else {
+		query, err := ndsquota.ParseQuery(os.Args[1])
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Fprintf(logfile, "preauth call: %+v\n", query)
+		app.Preauth(query)
 	}
-
-	query, err := ndsquota.ParseQuery(os.Args[1])
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Fprintf(logfile, "decoded query: %+v\n", query)
-
-	app.Preauth(query)
 }

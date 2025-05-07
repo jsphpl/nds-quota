@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path"
 )
@@ -83,10 +82,10 @@ func (repo *AccountRepository) Save(account *Account) error {
 func (repo *AccountRepository) All() <-chan *Account {
 	ch := make(chan *Account)
 
-	go func(accounts chan<- *Account) {
+	go func() {
 		defer close(ch)
 
-		files, err := ioutil.ReadDir(path.Join(repo.location, accountsDir))
+		files, err := os.ReadDir(path.Join(repo.location, accountsDir))
 		if err != nil {
 			return
 		}
@@ -103,7 +102,7 @@ func (repo *AccountRepository) All() <-chan *Account {
 
 			ch <- account
 		}
-	}(ch)
+	}()
 
 	return ch
 }

@@ -65,7 +65,7 @@ func (app *NDSQuota) Preauth(query map[string]string) {
 		client, err := app.ndsctl.ClientInfo(query["clientip"])
 		if err != nil {
 			params.Title = "Error"
-			params.Error = fmt.Sprintf("Unknown error: %s", err)
+			params.Error = fmt.Sprintf("Get client info: %s", err)
 			app.render(params, true)
 			return
 		}
@@ -73,7 +73,7 @@ func (app *NDSQuota) Preauth(query map[string]string) {
 		err = app.accounts.AssignMacAddress(account.ID, client.MacAddress)
 		if err != nil {
 			params.Title = "Error"
-			params.Error = fmt.Sprintf("Unknown error: %s", err)
+			params.Error = fmt.Sprintf("Assign mac address: %s", err)
 			app.render(params, true)
 			return
 		}
@@ -81,7 +81,7 @@ func (app *NDSQuota) Preauth(query map[string]string) {
 		err = app.ndsctl.Auth(client.MacAddress)
 		if err != nil {
 			params.Title = "Error"
-			params.Error = fmt.Sprintf("Unknown error: %s", err)
+			params.Error = fmt.Sprintf("Authenticate client: %s", err)
 			app.render(params, true)
 			return
 		}
@@ -110,31 +110,31 @@ func (app *NDSQuota) CheckDeauth() error {
 		}
 
 		// Update used quota for account
-		used := 0
+		var used uint = 0
 		for _, device := range account.Devices {
 			info, err := app.ndsctl.ClientInfo(device.MacAddress)
 			if err != nil {
-				return err
+				log.Printf("Error getting client info: %s", err)
 			}
 			downloaded, err := strconv.Atoi(info.DownloadKiB)
 			if err != nil {
-				log.Println(err)
+				log.Printf("Error converting '%s' to int: %s", info.DownloadKiB, err)
 				continue
 			}
-			used += downloaded
+			used += uint(downloaded)
 		}
 
-		if used > int(account.UsedKiB) {
-			account.UsedKiB = uint(used)
+		if used > account.UsedKiB {
+			account.UsedKiB = used
 			err := app.accounts.Save(account)
 			if err != nil {
-				log.Println(err)
+				log.Printf("Error saving account: %s", err)
 			}
 		}
 
 		// Deauth all of the account's devices if quota exceeded
 		if account.UsedKiB >= account.QuotaKiB {
-			log.Printf("deauth %s (%v) - used %d/%d KiB", account.ID, account.Devices, account.UsedKiB, account.QuotaKiB)
+			log.Printf("Deauth %s (%v) - used %d/%d KiB", account.ID, account.Devices, account.UsedKiB, account.QuotaKiB)
 			for _, device := range account.Devices {
 				app.ndsctl.Deauth(device.MacAddress)
 			}

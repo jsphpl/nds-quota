@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"sync"
 
 	"github.com/jsphpl/nds-quota/internal/accounts"
 	"github.com/jsphpl/nds-quota/internal/config"
@@ -39,7 +40,7 @@ func main() {
 	app := ndsquota.New(
 		accounts.NewAccountRepository(config.DataDirectory),
 		renderer,
-		ndsctl.NewNDSCTL(config.NDSCTLBin),
+		ndsctl.NewNDSCTL(config.NDSCTLBin, &sync.Mutex{}),
 	)
 
 	// Run it!
